@@ -9,7 +9,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 import warnings
 warnings.filterwarnings('ignore')
 
-# 导入公共代码
 from utils import *
 
 # ===================== Lightweight Training & Evaluation Function =====================
