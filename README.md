@@ -35,8 +35,8 @@ SOC-Estimation-CNN-BiLSTM/
 ```
 
 ## 📊 Visualisation
-![step_voltage_analysis_0](figs/step_voltage_analysis_0.png)
-![step_current_analysis_0](figs/step_current_analysis_0.png)
+![step_voltage_analysis_0](https://raw.githubusercontent.com/627c/SOC-Estimation/main/figs/step_voltage_analysis_0.png)
+![step_current_analysis_0](https://raw.githubusercontent.com/627c/SOC-Estimation/main/figs/step_current_analysis_0.png)
 
 
 ## 🚀 Quick Start (For Users – No Training Required)
