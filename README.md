@@ -14,6 +14,29 @@ SOC-Estimation/
 └── README.md               # Usage documentation
 ```
 
+# SOC-Estimation-CNN-BiLSTM
+Zero-shot SOC Estimation with CNN-BiLSTM and Channel Attention, based on CALCE Dataset.
+
+## 📋 Project Structure
+```
+SOC-Estimation-CNN-BiLSTM/
+├── utils.py                # Core utilities (dataset, model, helper functions)
+├── train.py                # Training script (for author only)
+├── test.py                 # One-click inference (for users)
+├── requirements.txt         # Dependencies
+├── best_model_final.pth    # Pretrained weights
+├── feature_scaler.pkl      # Feature scaler
+├── soc_scaler.pkl          # SOC scaler
+├── figs/                    # Figures for README
+│   ├── pso_swarm_cool.gif
+│   ├── loss_curve.png
+│   └── prediction_example.png
+└── README.md
+```
+
+## 📊 Visualisation
+
+
 ## 🚀 Quick Start (For Users – No Training Required)
 ### 1. Prerequisites
 - Python 3.8+
