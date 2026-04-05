@@ -3,7 +3,7 @@ Zero-shot SOC Estimation with CNN-BiLSTM and Channel Attention (CALCE Dataset)
 
 ## 📋 Project Structure
 ```
-SOC-Estimation-CNN-BiLSTM/
+SOC-Estimation/
 ├── utils.py                # Core utilities (dataset, model, helper functions)
 ├── train.py                # Training script (for author only: PSO + Grid Search + full training)
 ├── test.py                 # One-click inference (for users: load pretrained model)
@@ -21,8 +21,8 @@ SOC-Estimation-CNN-BiLSTM/
 
 ### 2. Clone Repository
 ```bash
-git clone https://github.com/your-username/SOC-Estimation-CNN-BiLSTM.git
-cd SOC-Estimation-CNN-BiLSTM
+git clone https://github.com/your-username/SOC-Estimation.git
+cd SOC-Estimation
 ```
 
 ### 3. Install Dependencies
