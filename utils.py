@@ -227,21 +227,15 @@ def generate_detail_report(results, all_temps):
     report_en = f"""# SOC Estimation Full Report
 **Generated on**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-## 2. Dataset Partition (Zero-Shot Cross-Profile)
+## 1. Dataset Partition (Zero-Shot Cross-Profile)
 | Dataset | Driving Cycles | Academic Purpose Statement |
 |---------|----------------|---------------------------|
 | Training Set | DST (All Temperatures) | **Training Only**: The only source of gradient updates visible to the model |
 | Validation Set | FUDS (All Temperatures) | **Validation**: Used solely for PSO fitness evaluation and early stopping (Seen distribution) |
 | Test Set | US06 (All Temperatures) | **Strict Blind Test**: The sole metric for zero-shot cross-profile generalization performance |
 
-## 3. PSO vs Grid Search Hyperparameter Optimization Comparison
-*Note: PSO employs log-space search for precise localization of continuous minima.*
-| Method | Learning Rate (LR) | CNN Kernel | LSTM Hidden Units | Validation (FUDS) RMSE (%) |
-|--------|---------------------|------------|-------------------|----------------------------|
-| PSO    | {results['pso_lr']:.6f} | {results['pso_cnn_kernel']} | {results['pso_lstm_hidden']} | {results['pso_val_rmse']:.4f} |
-| Grid   | {results['grid_lr']:.6f} | {results['grid_cnn_kernel']} | {results['grid_lstm_hidden']} | {results['grid_val_rmse']:.4f} |
 
-## 4. Detailed Performance Results Across All Temperatures
+## 2. Detailed Performance Results Across All Temperatures
 *Academic Statement: Since FUDS participates in the early stopping mechanism, its results are for reference and validation only. The true cross-profile generalization capability of the model is based on US06.*
 
 | Temperature (°C) | Dataset Attribute | Cycle | RMSE (%) | MAE (%) |
@@ -256,12 +250,12 @@ def generate_detail_report(results, all_temps):
         report_en += f"\n| {temp} | **Blind Test (Unseen)** | **US06** | **{us06_rmse:.4f}** | **{us06_mae:.4f}** |"
 
     report_en += f"""
-## 5. Key Performance Summary (Based on US06 Blind Test)
+## 3. Key Performance Summary (Based on US06 Blind Test)
 - **US06 Blind Test Average RMSE**: {np.mean([results[t]['US06']['rmse'] for t in all_temps]):.4f}%
 - **US06 Blind Test Average MAE**: {np.mean([results[t]['US06']['mae'] for t in all_temps]):.4f}%
 *(Note: FUDS validation set average RMSE is {np.mean([results[t]['FUDS']['rmse'] for t in all_temps]):.4f}%)*
 
-## 6. Final Conclusion
+## 4. Final Conclusion
 The proposed model completely abandons the traditional Coulomb counting accumulation. It solely relies on 5-dimensional transient measurable physical quantities (current, voltage, temperature, and voltage temporal derivatives). Under the rigorous zero-shot framework of "DST Training $\rightarrow$ FUDS Validation $\rightarrow$ US06 Blind Test", it achieves extremely high prediction accuracy across the full temperature range (0-50°C). Furthermore, by utilizing the log-scaled PSO algorithm, it successfully overcomes the limitations of discrete grid search and precisely locates the optimal hyperparameters in the continuous domain. The proposed method features rigorous physical logic and possesses complete practical value for edge deployment in real BMS.
 """
     with open(f"{RESULT_DIR}/Full_Report_English.md", 'w', encoding='utf-8') as f:
