@@ -7,7 +7,7 @@ def run_grid_search(train_loader, val_loader, feature_scaler, soc_scaler,
     """
     Core Grid Search function (Strictly 225 evaluations)
     """
-    print("\n🔍 Starting Grid Search comparison (Equal Budget: 225 evaluations)...")
+    print("\n Starting Grid Search comparison (Equal Budget: 225 evaluations)...")
     
     lr_candidates = np.array([0.0001, 0.0002, 0.0004, 0.0008, 0.0016])  # 5 values, log-ish space
     kernel_candidates = [3, 5, 7, 9, 11]  # 5 odd numbers
@@ -37,9 +37,9 @@ def run_grid_search(train_loader, val_loader, feature_scaler, soc_scaler,
                 if rmse < best_rmse:
                     best_rmse = rmse
                     best_params = {'lr': lr, 'cnn_kernel': kernel, 'lstm_hidden': hidden, 'rmse': rmse}
-                    print(f"  🎉 New Grid Best!")
+                    print(f"   New Grid Best!")
     
     # Save results
     pd.DataFrame(grid_results).to_csv(f"{save_dir}/grid_search_results.csv", index=False)
-    print(f"\n✅ Grid Search finished. Best: {best_params}")
+    print(f"\n Grid Search finished. Best: {best_params}")
     return best_params
