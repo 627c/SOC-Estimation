@@ -63,7 +63,7 @@ def pso_objective_function(swarm_pos, train_loader, val_loader, feature_scaler, 
 
 # ===================== Grid Search Comparison =====================
 def run_grid_search(train_loader, val_loader, feature_scaler, soc_scaler):
-    print("\n🔍 Starting Grid Search comparison...")
+    print("\n Starting Grid Search comparison...")
     lr_candidates = [0.0001, 0.001, 0.003]
     kernel_candidates = [3, 7, 11]
     hidden_candidates = [32, 64, 128]
@@ -84,12 +84,12 @@ def run_grid_search(train_loader, val_loader, feature_scaler, soc_scaler):
                     best_params = {'lr': lr, 'cnn_kernel': kernel, 'lstm_hidden': hidden, 'rmse': rmse}
     
     pd.DataFrame(grid_results).to_csv(f"{DATA_SAVE_DIR}/grid_search_results.csv", index=False)
-    print(f"\n✅ Grid Search completed, Best params: {best_params}")
+    print(f"\n Grid Search completed, Best params: {best_params}")
     return best_params
 
 # ===================== Hyperparameter Sensitivity Analysis =====================
 def generate_hyperparam_sensitivity(train_loader, val_loader, feature_scaler, soc_scaler, kernel_fixed):
-    print("\n📊 Generating hyperparameter sensitivity data...")
+    print("\n Generating hyperparameter sensitivity data...")
     lr_candidates = [0.0005, 0.001, 0.002, 0.003, 0.005]
     hidden_candidates = [32, 64, 80, 100, 128]
     
@@ -105,7 +105,7 @@ def generate_hyperparam_sensitivity(train_loader, val_loader, feature_scaler, so
         "lr": lr_candidates,
         "hidden_units": hidden_candidates
     }).to_json(f"{DATA_SAVE_DIR}/hyperparam_params.json", orient="records")
-    print("✅ Hyperparameter sensitivity data saved!")
+    print("Hyperparameter sensitivity data saved!")
     return sensitivity_matrix
 
 # ===================== Full Training Function (returns loss history) =====================
@@ -160,11 +160,11 @@ def train_full_model(model, train_loader, val_loader, lr, soc_scaler, epochs=300
             best_val_rmse = val_rmse
             patience_counter = 0
             torch.save(model.state_dict(), f"{RESULT_DIR}/best_model.pth")
-            print(f"\n✅ New best model! Validation RMSE: {val_rmse:.4f}%")
+            print(f"\n New best model! Validation RMSE: {val_rmse:.4f}%")
         else:
             patience_counter += 1
             if patience_counter >= early_stop_patience:
-                print(f"\n✅ Early stopping triggered! Training stopped at epoch {epoch+1}")
+                print(f"\n Early stopping triggered! Training stopped at epoch {epoch+1}")
                 model.load_state_dict(torch.load(f"{RESULT_DIR}/best_model.pth"))
                 break
     
@@ -186,12 +186,12 @@ def train_full_model(model, train_loader, val_loader, lr, soc_scaler, epochs=300
 # ===================== Main Training Pipeline =====================
 if __name__ == "__main__":
     print("="*80)
-    print("🚀 SOC Estimation Training Pipeline")
+    print(" SOC Estimation Training Pipeline")
     print("="*80)
     results = {}
     all_temps = [0, 10, 20, 25, 30, 40, 50]
     
-    print("\n🔍 Loading data...")
+    print("\n Loading data...")
     list_train = [load_real_data('DST', t) for t in all_temps]
     list_val   = [load_real_data('FUDS', t) for t in all_temps]
     
@@ -203,15 +203,15 @@ if __name__ == "__main__":
     
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader   = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
-    print(f"✅ Dataset constructed | Training set: {len(train_dataset)} pure sequence samples (DST)")
+    print(f" Dataset constructed | Training set: {len(train_dataset)} pure sequence samples (DST)")
 
     with open(f"{DATA_SAVE_DIR}/feature_scaler.pkl", 'wb') as f:
         pickle.dump(train_dataset.feature_scaler, f)
     with open(f"{DATA_SAVE_DIR}/soc_scaler.pkl", 'wb') as f:
         pickle.dump(train_dataset.soc_scaler, f)
-    print("✅ Scalers saved!")
+    print(" Scalers saved!")
     
-    print("\n🔍 Starting PSO hyperparameter optimization...")
+    print("\n Starting PSO hyperparameter optimization...")
     PSO_N_PARTICLES = 15
     PSO_ITERS = 15
     w_max, w_min = 0.9, 0.4
@@ -246,7 +246,7 @@ if __name__ == "__main__":
 
     results['pso_lstm_hidden'] = int(np.round(pso_best_pos[2]))
     results['pso_val_rmse'] = pso_best_cost
-    print(f"\n✅ PSO optimization completed, convergence data saved!")
+    print(f"\n PSO optimization completed, convergence data saved!")
     
     grid_best = run_grid_search(train_loader, val_loader, train_dataset.feature_scaler, train_dataset.soc_scaler)
     results['grid_lr'] = grid_best['lr']
@@ -256,7 +256,7 @@ if __name__ == "__main__":
     
     generate_hyperparam_sensitivity(train_loader, val_loader, train_dataset.feature_scaler, train_dataset.soc_scaler, results['pso_cnn_kernel'])
     
-    print("\n🏋️ Full model training with PSO optimal params...")
+    print("\n Full model training with PSO optimal params...")
     best_model = CNNBiLSTM_ChannelAttn(
         cnn_kernel_size=results['pso_cnn_kernel'],
         lstm_hidden=results['pso_lstm_hidden']
@@ -267,4 +267,4 @@ if __name__ == "__main__":
     )
     torch.save(best_model.state_dict(), f"{RESULT_DIR}/best_model_final.pth")
     
-    print("\n🎉 Training completed! Model saved to results folder")
+    print("\n Training completed! Model saved to results folder")
