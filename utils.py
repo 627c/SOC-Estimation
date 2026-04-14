@@ -39,7 +39,7 @@ RESULT_DIR = f"/data/stu1/liuanqi/soc_calce/final/results/SOC_Estimation_Final_F
 DATA_SAVE_DIR = f"{RESULT_DIR}/plot_data"
 os.makedirs(RESULT_DIR, exist_ok=True)
 os.makedirs(DATA_SAVE_DIR, exist_ok=True)
-print(f"✅ Environment configured, Device: {device}, Plot data directory: {DATA_SAVE_DIR}")
+print(f" Environment configured, Device: {device}, Plot data directory: {DATA_SAVE_DIR}")
 
 # ===================== Dataset Class =====================
 class BatteryDataset(Dataset):
@@ -164,12 +164,12 @@ class CNNBiLSTM_ChannelAttn(nn.Module):
 def load_real_data(working_condition, temp):
     file_path = f"/data/stu1/liuanqi/soc_calce/final/data/CALCE_{working_condition}_Step_{temp}.xlsx"
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"❌ Data file not found, please check the path: {file_path}")
+        raise FileNotFoundError(f" Data file not found, please check the path: {file_path}")
     df = pd.read_excel(file_path)
     required_cols = ['Current(A)', 'Voltage(V)', 'Temperature(°C)', 'SOC(%)']
     for col in required_cols:
         if col not in df.columns:
-            raise ValueError(f"❌ Missing required column: {col}, please check your Excel file")
+            raise ValueError(f" Missing required column: {col}, please check your Excel file")
     df = df[(df['Voltage(V)'] >= 2.5) & (df['Voltage(V)'] <= 4.2)].reset_index(drop=True)
     return df
 
@@ -260,4 +260,4 @@ The proposed model completely abandons the traditional Coulomb counting accumula
 """
     with open(f"{RESULT_DIR}/Full_Report_English.md", 'w', encoding='utf-8') as f:
         f.write(report_en)
-    print(f"✅ Full English report generated: {RESULT_DIR}/Full_Report_English.md")
+    print(f" Full English report generated: {RESULT_DIR}/Full_Report_English.md")
